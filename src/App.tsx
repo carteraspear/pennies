@@ -1,45 +1,46 @@
 import { useState } from 'react';
 import './App.css';
 
-// Define types for the items
+// define types for items
 interface BudgetItem {
   name: string;
   price: number;
 }
 
 function App() {
-  // State for the uploaded receipt image
+  // save image URL in state
   const [image, setImage] = useState<string | null>(null); // Image URL can be a string or null
-  // State for parsed receipt data
-  const [items, setItems] = useState<BudgetItem[]>([]); // Items array will hold BudgetItem objects
-  // State for total budget
+  //state for the parrsed uhhh recipt items
+  const [items, setItems] = useState<BudgetItem[]>([]); // items array! to store the parsed items
+  // state save the budget
   const [budget, setBudget] = useState<number>(0); // Budget is a number
 
-  // Handle file upload
+  // upload the file and parse the recipt
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]; // Check if files exist
     if (file) {
-      setImage(URL.createObjectURL(file)); // Store image preview URL
-      // Here you'd send the image to an OCR API for parsing
-      parseReceipt(file); // Simulated OCR parsing
+      setImage(URL.createObjectURL(file)); //store image preview
+      // TODO maybe send the file to the server to parse the recipt
+      parseReceipt(file); //sim parse for  now
+    
     }
   };
 
-  // Simulate parsing receipt with an OCR API
+  // sim parse with api
   const parseReceipt = (file: File) => {
-    // In reality, you'd call an OCR API (like Tesseract.js or Google Cloud Vision)
+    //todo maybe tessaract.js?
     const parsedItems: BudgetItem[] = [
       { name: 'Item 1', price: 12.99 },
       { name: 'Item 2', price: 5.49 },
     ];
 
-    // Add parsed items to the budget
+    // add parsed items to budget
     const newTotal = parsedItems.reduce((sum, item) => sum + item.price, 0);
     setBudget((prevBudget) => prevBudget + newTotal);
     setItems(parsedItems);
   };
 
-  // Handle adding an item manually
+  // if the user wants to add an item manually
   const handleAddItem = (name: string, price: number) => {
     const newItem: BudgetItem = { name, price };
     setItems([...items, newItem]);
